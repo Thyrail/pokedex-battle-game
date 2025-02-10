@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.Card-List {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: space-evenly;
+  grid-row-gap: 2rem;
+  justify-items: center;
+  max-width: 90%;
+  padding: 1rem;
+  margin: 0 auto;
+}
