@@ -7,7 +7,7 @@ import {Spinner} from "./utils/Spinner/Spinner.jsx";
 import {search} from "./helper/search.js";
 import {getFavoritePokemonList} from "./helper/createFavoriteList.js";
 import {Footer} from "./components/Footer/Footer.jsx";
-import {addFavorite, getPage, removeFavorite, setPage} from "./helper/storageWorker.js";
+import {addFavorite, getPage, removeFavorite, setPage} from "./helper/storageWorker";
 
 function App() {
     const [pokemonList, setPokemonList] = useState('')
