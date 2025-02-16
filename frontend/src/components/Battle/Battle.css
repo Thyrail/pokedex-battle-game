@@ -1,0 +1,70 @@
+.battle-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(62deg, #fbab7e 0%, #f7ce68 100%);
+    border: 0.5rem solid rgba(150, 90, 20, 1);
+    border-radius: 2rem;
+    box-shadow: 6px 6px 5px rgb(150, 150, 150);
+    padding: 2rem;
+}
+
+.enemy, .player {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 1rem;
+    padding: 1rem;
+    border: 0.25rem solid rgb(240, 210, 170);
+    box-shadow: 4px 4px 5px grey;
+    margin: 1rem;
+}
+
+.enemy img, .player img {
+    width: 120px;
+    height: 120px;
+}
+
+p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: rgb(160, 50, 0);
+}
+
+.moves {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+button {
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    background-color: white;
+    border: 0.25rem solid rgb(240, 210, 170);
+    box-shadow: 3px 3px 5px grey;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #f7ce68;
+}
+
+.log {
+    background: white;
+    padding: 1rem;
+    border-radius: 1rem;
+    border: 0.25rem solid rgb(240, 210, 170);
+    box-shadow: 4px 4px 5px grey;
+    margin-top: 1rem;
+    width: 80%;
+    max-height: 200px;
+    overflow-y: auto;
+}

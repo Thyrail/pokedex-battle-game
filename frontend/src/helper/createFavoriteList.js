@@ -1,10 +1,11 @@
-import {allFavorite} from "./storageWorker.js";
+import { allFavorite } from "./storageWorker.js";
 
-
-export function getFavoritePokemonList(pokemonList) {
-    const allFavoriteList = allFavorite();
-    // console.log(allFavoriteList)
-    const idsToKeep = new Set(allFavoriteList);
-
-    return pokemonList.filter((pokemon) => idsToKeep.has(pokemon.id));
+export function getFavoritePokemonList(pokemonList)
+{
+    if (!pokemonList || pokemonList.length === 0)
+    {
+        return [];
+    }
+    const favoriteIds = allFavorite();
+    return pokemonList.filter(pokemon => favoriteIds.includes(pokemon.id));
 }

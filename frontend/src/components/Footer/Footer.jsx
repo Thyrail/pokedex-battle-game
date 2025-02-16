@@ -1,8 +1,9 @@
 import './Footer.css'
-export function Footer() {
+export function Footer()
+{
     return (
-            <footer>
-                <span>Test Poke Api</span>
-            </footer>
+        <footer>
+            <span>Test Poke Api</span>
+        </footer>
     )
 }

@@ -41,6 +41,7 @@
             box-shadow: 6px 6px 5px rgb(190, 90, 50);
         }
     }
+
     span {
         display: block;
         width: 100%;
@@ -68,6 +69,3 @@
         }
     }
 }
-
-
-

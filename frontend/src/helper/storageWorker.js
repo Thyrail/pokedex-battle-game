@@ -1,156 +1,139 @@
-const localStorageKey = "pokemonList";
+const localStorageKey = "favoritePokemonList";
 const sessionStorageKey = "activeSite";
-const validSites = ["home", "favorite"];
+const leaderboardKey = "leaderboard";
+const validSites = ["home", "favorite", "battle", "leaderboard"];
 
-function validate(id) {
-    if (typeof id === "string" && /^[0-9]+$/.test(id.trim())) {
+export function setPage(name)
+{
+    name = name.trim().toLowerCase();
+    let valid = validSites.includes(name);
+
+    if (!valid)
+    {
+        return validSites[0];
+    }
+
+    try
+    {
+        sessionStorage.setItem(sessionStorageKey, name);
+    } catch (error)
+    {
+        console.warn("sessionStorage not accessible:", error);
+    }
+
+    return name;
+}
+
+export function getPage()
+{
+    try
+    {
+        return sessionStorage.getItem(sessionStorageKey) || "home";
+    } catch (error)
+    {
+        console.warn("sessionStorage not accessible:", error);
+        return "home";
+    }
+}
+
+function validate(id)
+{
+    if (typeof id === "string" && /^[0-9]+$/.test(id.trim()))
+    {
         id = parseInt(id.trim());
     }
 
-    if (typeof id === "number" && id >= 0 && id % 1 === 0) {
+    if (typeof id === "number" && id >= 1 && Number.isInteger(id))
+    {
         return id;
     }
 
     return false;
 }
 
-export function addFavorite(id) {
+export function addFavorite(id)
+{
     let valid = validate(id);
 
-    if (valid === false) {
+    if (valid === false)
+    {
+        console.error("Invalid ID:", id);
         return false;
     }
 
-    if (findFavorite(id)) {
-        return;
+    let favorites = allFavorite();
+    if (!favorites.includes(id))
+    {
+        favorites.push(id);
+        localStorage.setItem(localStorageKey, JSON.stringify(favorites));
     }
-
-    localStorage.setItem(
-        localStorageKey,
-        JSON.stringify(
-            [...allFavorite(), id].sort(function (a, b) {
-                return a - b;
-            })
-        )
-    );
 }
 
-export function allFavorite() {
-    let data = JSON.parse(localStorage.getItem(localStorageKey)) || [];
-    data = data.sort(function (a, b) {
-        return a - b;
-    });
-    return data;
+export function allFavorite()
+{
+    try
+    {
+        return JSON.parse(localStorage.getItem(localStorageKey)) || [];
+    } catch (error)
+    {
+        console.warn("localStorage not accessible:", error);
+        return [];
+    }
 }
 
-export function findFavorite(id) {
+export function findFavorite(id)
+{
+    let valid = validate(id);
+    if (valid === false)
+    {
+        console.error("Invalid ID check:", id);
+        return false;
+    }
+    return allFavorite().includes(id);
+}
+
+export function removeFavorite(id)
+{
     let valid = validate(id);
 
-    if (valid === false) {
-        console.log("Error: id is not valid", id);
+    if (valid === false)
+    {
+        console.error("Invalid ID:", id);
         return false;
     }
 
-    let res = false;
-    allFavorite().forEach(function (fav) {
-        if (fav === id) {
-            res = true;
-        }
-    });
-
-    return res;
+    let favorites = allFavorite().filter((favId) => favId !== id);
+    localStorage.setItem(localStorageKey, JSON.stringify(favorites));
 }
 
-export function removeFavorite(id) {
-    let valid = validate(id);
+export function clearFavorites()
+{
+    localStorage.removeItem(localStorageKey);
+}
 
-    if (valid === false) {
-        console.log("Error: id is not valid", id);
-        return false;
+// Leaderboard-Funktionen
+export function saveScore(playerName, score)
+{
+    try
+    {
+        const leaderboard = JSON.parse(localStorage.getItem(leaderboardKey)) || [];
+        leaderboard.push({ name: playerName, score });
+        leaderboard.sort((a, b) => b.score - a.score);
+        localStorage.setItem(leaderboardKey, JSON.stringify(leaderboard));
+    } catch (error)
+    {
+        console.warn("localStorage not accessible for leaderboard:", error);
     }
-
-    let data = allFavorite();
-
-    data = data.filter((item) => {
-        return item !== id;
-    });
-
-    clear();
-
-    localStorage.setItem(
-        localStorageKey,
-        JSON.stringify(
-            data.sort(function (a, b) {
-                return a - b;
-            })
-        )
-    );
 }
 
-export function clear() {
-    localStorage.clear();
-}
-
-
-
-export function setPage(name) {
-    name = name.trim().toLowerCase();
-    let valid = validSites.includes(name);
-
-    if (valid === false) {
-        return validSites[0]; // fallback Site
+export function getLeaderboard()
+{
+    try
+    {
+        return JSON.parse(localStorage.getItem(leaderboardKey)) || [];
+    } catch (error)
+    {
+        console.warn("localStorage not accessible for leaderboard:", error);
+        return [];
     }
-
-    sessionStorage.setItem(sessionStorageKey, name)
-
-    return name;
 }
-
-export function getPage() {
-    return sessionStorage.getItem(sessionStorageKey) || [];
-}
-
-
-// const storageKey = "pokemonList";
-//
-// //* Speichert die PokemonListe im Local Storage
-// export function saveToLocalStorage(pokemonList) {
-//     if (!pokemonList || typeof pokemonList !== "object") {
-//         console.error("Invalid data passed to saveToLocalStorage:", pokemonList);
-//         return;
-//     }
-//     localStorage.setItem(storageKey, JSON.stringify(pokemonList));
-// }
-//
-// //* Ruft die PokemonListe aus dem Local Storage ab
-// export function getAllPokemon() {
-//     const data = JSON.parse(localStorage.getItem(storageKey)) || [];
-//     return data;
-// }
-//
-// //* Ruft nur die Favoriten ab
-// export function getFavorites() {
-//     const allPokemon = getAllPokemon();
-//     return allPokemon.filter((pokemon) => pokemon.favorite);
-// }
-//
-// //* Setzt den FavoritenStatus eines Pokemon auf true oder false
-// export function setAndRemoveAsFavorite(pokemonId) {
-//     const allPokemon = getAllPokemon();
-//     const updatedPokemon = allPokemon.map(pokemon => pokemon.id === pokemonId
-//         ? pokemon.favorite === true
-//             ? {...pokemon, favorite: false} : {...pokemon, favorite: true}
-//         : pokemon);
-//     saveToLocalStorage(updatedPokemon);
-// }
-//
-// //? ____________________________________________________________________________
-// //? Fügt zusätzliche PokemonDaten hinzu oder aktualisiert bestehende (OPTIONAL)
-// // export function updatePokemon(pokemonId, updates)
-// // {
-// //     const allPokemon = getAllPokemon();
-// //     const updatedPokemon = allPokemon.map((pokemon) =>
-// //         pokemon.id === pokemonId ? { ...pokemon, ...updates } : pokemon
-// //     );
-// //     saveToLocalStorage(updatedPokemon);
-// // }

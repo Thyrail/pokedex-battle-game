@@ -1,51 +1,49 @@
-import './Header.css'
-import {useState} from "react";
+import "./Header.css";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export function Header({onSearch, onClick}) {
+export function Header({ onSearch })
+{
     const [searchInputData, setSearchInputData] = useState('');
+    const navigate = useNavigate();
 
+    const handleTyping = (event) =>
+    {
+        setSearchInputData(event.target.value);
+    };
 
-    const handleTyping = (event) => {
-        setSearchInputData(event.target.value)
-    }
-    const handleOnKeyDown = (event) => {
-        if (event.keyCode === 13) {
-            event.preventDefault()
+    const handleOnKeyDown = (event) =>
+    {
+        if (event.key === "Enter")
+        {
+            event.preventDefault();
             onSearch(event.target.value);
-            event.target.value.clear;
-            setSearchInputData('')
+            setSearchInputData('');
         }
-    }
+    };
 
-    const handleOnClick = (event) => {
-        onClick(event.target.innerText)
-    }
     return (
         <header className="header">
-            <nav className="">
-                <h1 className="">PokeDex-Diary</h1>
-                <form className="" action="">
+            <nav>
+                <h1>PokeDex-Diary</h1>
+                <form>
                     <input
                         value={searchInputData}
                         type="text"
-                        className=""
                         id="search"
                         placeholder="Search"
                         onKeyDown={handleOnKeyDown}
                         onChange={handleTyping}
                     />
                 </form>
-                <span className="">
-             <button
-                 className=""
-                 onClick={handleOnClick}
-             >Home</button>
-          <button
-              className=""
-              onClick={handleOnClick}
-          >Favorite</button>
-        </span>
+                <span>
+                    <button onClick={() => navigate("/")}>Home</button>
+                    <button onClick={() => navigate("/favorite")}>Favorite</button>
+                    <button onClick={() => navigate("/battle")}>Battle</button>
+                    <button onClick={() => navigate("/leaderboard")}>Leaderboard</button>
+                </span>
             </nav>
         </header>
-    )
+    );
+
 }

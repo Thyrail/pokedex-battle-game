@@ -1,0 +1,53 @@
+.leaderboard-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background: #f4f4f4;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.leaderboard-table th, .leaderboard-table td {
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+}
+
+.leaderboard-table th {
+    background: #ffcc00;
+    color: #333;
+    font-weight: bold;
+}
+
+.leaderboard-table tr:nth-child(odd) {
+    background: #fff;
+}
+
+.leaderboard-table tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+.top-player {
+    font-weight: bold;
+    color: #d9534f;
+}
+
+@media (max-width: 600px) {
+    .leaderboard-container {
+        width: 90%;
+    }
+
+    .leaderboard-table th, .leaderboard-table td {
+        padding: 0.5rem;
+    }
+}
